@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>JUAN. FILMS VERSE</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0d0d0d;
+      color: #fff;
+    }
+
+    header {
+      background-image: linear-gradient(to right, #111, #222);
+      padding: 15px 20px;
+      border-bottom: 3px solid #ff4444;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 28px;
+      color: #ff4444;
+      margin: 0;
+      letter-spacing: 2px;
+    }
+
+    header .contato {
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+    }
+
+    .form-area {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+    }
+
+    input, button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    input {
+      width: 80%;
+      max-width: 400px;
+      color: #000;
+    }
+
+    button {
+      background-color: #ff4444;
+      color: white;
+      cursor: pointer;
+    }
+
+    a {
+      color: #ff4444;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #mensagemErro, #msgCodigoInvalido {
+      color: red;
+      margin-top: 10px;
+    }
+
+    #msgCodigoEnviado {
+      color: #4CAF50;
+    }
+
+    #msgCodigoInvalido {
+      min-height: 18px;
+    }
+
+    /* Escondidos inicialmente */
+    #assinaturaForm, #codigoForm, #mensagemLiberado, #formulario, .video-grid, #senhaForm {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      iframe {
+        height: 300px;
+      }
+
+      header h1 {
+        font-size: 24px;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>JUAN. FILMS VERSE</h1>
+    <div class="contato">Quer postar mini filmes? Chame no WhatsApp: <a href="https://wa.me/559899880021">55989-9880021</a></div>
+  </header>
+
+  <div class="container">
+
+    <!-- ETAPA 1 - PIX -->
+    <div id="etapaPix" class="form-area" style="display: block;">
+      <h3>Pagamento via PIX</h3>
+      <p>Faça o pagamento de 4,99 para liberar o acesso:</p>
+      <p style="font-size: 22px; font-weight: bold; letter-spacing: 2px;">559899880021</p>
+      <button onclick="mostrarEtapaComprovante()">Já paguei</button>
+    </div>
+
+    <!-- ETAPA 2 - Comprovante WhatsApp -->
+    <div id="etapaComprovante" class="form-area" style="display: none;">
+      <h3>Confirmação de Pagamento</h3>
+      <p>Envie seu comprovante no WhatsApp e peça seu código:</p>
+      <p><a href="https://wa.me/559899880021" target="_blank">Abrir WhatsApp</a></p>
+      <button onclick="mostrarAreaCodigo()">Já enviei o comprovante</button>
+    </div>
+
+    <!-- ETAPA 3 - Código de acesso -->
+    <div id="areaCodigo" class="form-area" style="display: none;">
+      <h3>Digite o código recebido</h3>
+      <input type="text" id="codigoInput" placeholder="Código de acesso" />
+      <button onclick="verificarCodigo()">Validar código</button>
+      <p id="msgCodigoInvalido"></p>
+    </div>
+
+    <!-- Mensagem de acesso liberado -->
+    <div id="mensagemLiberado" class="form-area" style="display: none;">
+      <h3>Acesso Liberado!</h3>
+      <p>Para receber seu código, <b>chame no WhatsApp:</b> <a href="https://wa.me/559899880021">55989-9880021</a></p>
+    </div>
+
+    <!-- Área para postar vídeos (somente RUAN) -->
+    <div id="senhaForm" class="form-area" style="display: none;">
+      <h3>Área do RUAN (Dono)</h3>
+      <input type="password" id="senha" placeholder="Digite a senha" />
+      <br />
+      <button onclick="verificarSenha()">Entrar</button>
+      <p id="mensagemErro"></p>
+    </div>
+
+    <!-- Formulário para adicionar vídeo -->
+    <div id="formulario" class="form-area" style="display: none;">
+      <h3>Adicionar novo vídeo</h3>
+      <input type="text" id="videoURL" placeholder="Cole o link do YouTube" />
+      <br />
+      <button onclick="adicionarVideo()">Adicionar Vídeo</button>
+    </div>
+
+    <!-- Grade de vídeos atualizada -->
+    <div class="video-grid" id="videos">
+      <iframe src="https://www.youtube.com/embed/J2uvKEILF_o" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/71XPkJyzVCE" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/La5Zxi8sqJc" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/PyXnSVCcoLs" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/vLorVTSl8Qo" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/h5BSjJxvxlA" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/6c6bnnNG2r0" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/hdoPqEvXmRg" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script>
+    const senhaCorreta = "juansenha";
+    const codigoCorreto = "JUAN2025";
+    let acessoLiberado = false;
+
+    function mostrarEtapaComprovante() {
+      document.getElementById("etapaPix").style.display = "none";
+      document.getElementById("etapaComprovante").style.display = "block";
+    }
+
+    function mostrarAreaCodigo() {
+      document.getElementById("etapaComprovante").style.display = "none";
+      document.getElementById("areaCodigo").style.display = "block";
+    }
+
+    function verificarCodigo() {
+      const codigoDigitado = document.getElementById("codigoInput").value.trim();
+      const msg = document.getElementById("msgCodigoInvalido");
+      if (codigoDigitado === codigoCorreto) {
+        acessoLiberado = true;
+        document.getElementById("etapaPix").style.display = "none";
+        document.getElementById("etapaComprovante").style.display = "none";
+        document.getElementById("areaCodigo").style.display = "none";
+        document.getElementById("mensagemLiberado").style.display = "block";
+        document.getElementById("senhaForm").style.display = "block";
+        document.getElementById("videos").style.display = "grid";
+      } else {
+        msg.innerText = "Código inválido. Tente novamente.";
+      }
+    }
+
+    function verificarSenha() {
+      const senha = document.getElementById("senha").value;
+      const msgErro = document.getElementById("mensagemErro");
+      if (senha === senhaCorreta) {
+        document.getElementById("formulario").style.display = "block";
+        document.getElementById("senhaForm").style.display = "none";
+        msgErro.innerText = "";
+      } else {
+        msgErro.innerText = "Senha incorreta!";
+      }
+    }
+
+    function adicionarVideo() {
+      const url = document.getElementById("videoURL").value;
+      const videoId = extrairVideoID(url);
+      if (videoId) {
+        if (senhaCorreta === document.getElementById("senha").value) {
+          adicionarIframe(videoId);
+          salvarVideo(videoId);
+          document.getElementById("videoURL").value = "";
+        } else {
+          alert("Você precisa estar logado como RUAN para postar vídeos.");
+        }
+      } else {
+        alert("URL inválida! Cole o link completo do YouTube.");
+      }
+    }
+
+    function adicionarIframe(videoId) {
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://www.youtube.com/embed/${videoId}`;
+      iframe.allowFullscreen = true;
+      document.getElementById("videos").appendChild(iframe);
+    }
+
+    function salvarVideo(videoId) {
+      let videos = JSON.parse(localStorage.getItem("videosRuan")) || [];
+      if (!videos.includes(videoId)) {
+        videos.push(videoId);
+        localStorage.setItem("videosRuan", JSON.stringify(videos));
+      }
+    }
+
+    function extrairVideoID(url) {
+      const regExp = /^.*(?:youtu.be\/|v=)([^#&?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[1].length === 11) ? match[1] : null;
+    }
+  </script>
+</body>
+</html>
